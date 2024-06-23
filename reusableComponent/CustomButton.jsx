@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
   },
   outlined: {
     borderWidth: 1,
-    borderColor: 'white', // adjust border color as needed
+    borderColor: 'white', 
     backgroundColor: 'transparent',
   },
   primary: {

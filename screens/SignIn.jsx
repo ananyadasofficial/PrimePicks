@@ -66,7 +66,7 @@ const SignIn = ({ navigation }) => {
       <CustomButton
         title="Login"
         onPress={handleSignIn}
-        variant="primary" // Set variant to 'primary'
+        variant="primary" 
       />
       <Text style={styles.signUpText}>
         Don't have an account?

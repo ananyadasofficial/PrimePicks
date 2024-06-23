@@ -72,7 +72,7 @@ const SignUp = ({ navigation }) => {
       <CustomButton
         title="Register"
         onPress={handleSignUp}
-        variant="primary" // Ensure variant is set to 'primary' for #FFAF45 color
+        variant="primary" 
       />
       <Text style={styles.signInText}>
         Already have an account?
