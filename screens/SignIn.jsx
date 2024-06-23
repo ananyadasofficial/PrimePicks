@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Alert } from 'react-native';
+import { StyleSheet, Text, View, TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CustomButton from '../reusableComponent/CustomButton';
 
@@ -44,35 +44,33 @@ const SignIn = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.heading}>Sign In</Text>
-      <TextInput 
-        style={[styles.input, emailError ? styles.errorInput : null]} 
-        placeholder="Enter your email" 
+      <TextInput
+        style={[styles.input, emailError ? styles.errorInput : null]}
+        placeholder="Enter your email"
         placeholderTextColor="#999"
         keyboardType="email-address"
         value={email}
-        onChangeText={text => setEmail(text)}
+        onChangeText={(text) => setEmail(text)}
       />
       {emailError ? <Text style={styles.errorText}>{emailError}</Text> : null}
-      <TextInput 
-        style={[styles.input, passwordError ? styles.errorInput : null]} 
-        placeholder="Enter your password" 
+      <TextInput
+        style={[styles.input, passwordError ? styles.errorInput : null]}
+        placeholder="Enter your password"
         placeholderTextColor="#999"
         secureTextEntry
         value={password}
-        onChangeText={text => setPassword(text)}
+        onChangeText={(text) => setPassword(text)}
       />
       {passwordError ? <Text style={styles.errorText}>{passwordError}</Text> : null}
       <Text style={styles.forgotPassword}>Forgot password?</Text>
-      <CustomButton 
-        title="Login" 
-        onPress={handleSignIn} 
+      <CustomButton
+        title="Login"
+        onPress={handleSignIn}
+        variant="primary" // Set variant to 'primary'
       />
       <Text style={styles.signUpText}>
-        Don't have an account? 
-        <Text 
-          style={styles.signUpLink} 
-          onPress={() => navigation.navigate('SignUp')}
-        >
+        Don't have an account?
+        <Text style={styles.signUpLink} onPress={() => navigation.navigate('SignUp')}>
           Sign Up
         </Text>
       </Text>

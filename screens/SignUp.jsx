@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Alert } from 'react-native';
+import { StyleSheet, Text, View, TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CustomButton from '../reusableComponent/CustomButton';
 
@@ -42,43 +42,41 @@ const SignUp = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.heading}>Sign Up</Text>
-      <TextInput 
-        style={styles.input} 
-        placeholder="Enter your name" 
+      <TextInput
+        style={styles.input}
+        placeholder="Enter your name"
         placeholderTextColor="#999"
         value={name}
-        onChangeText={text => setName(text)}
+        onChangeText={(text) => setName(text)}
       />
       {errors.name && <Text style={styles.error}>{errors.name}</Text>}
-      <TextInput 
-        style={styles.input} 
-        placeholder="Enter your email" 
+      <TextInput
+        style={styles.input}
+        placeholder="Enter your email"
         placeholderTextColor="#999"
         keyboardType="email-address"
         value={email}
-        onChangeText={text => setEmail(text)}
+        onChangeText={(text) => setEmail(text)}
       />
       {errors.email && <Text style={styles.error}>{errors.email}</Text>}
-      <TextInput 
-        style={styles.input} 
-        placeholder="Enter your password" 
+      <TextInput
+        style={styles.input}
+        placeholder="Enter your password"
         placeholderTextColor="#999"
         secureTextEntry
         value={password}
-        onChangeText={text => setPassword(text)}
+        onChangeText={(text) => setPassword(text)}
       />
       {errors.password && <Text style={styles.error}>{errors.password}</Text>}
       <Text style={styles.forgotPassword}>Forgot password?</Text>
-      <CustomButton 
-        title="Register" 
-        onPress={handleSignUp} 
+      <CustomButton
+        title="Register"
+        onPress={handleSignUp}
+        variant="primary" // Ensure variant is set to 'primary' for #FFAF45 color
       />
       <Text style={styles.signInText}>
-        Already have an account? 
-        <Text 
-          style={styles.signInLink} 
-          onPress={() => navigation.navigate('SignIn')}
-        >
+        Already have an account?
+        <Text style={styles.signInLink} onPress={() => navigation.navigate('SignIn')}>
           Sign In
         </Text>
       </Text>
