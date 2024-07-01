@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CustomButton from '../reusableComponent/CustomButton';
+import CustomInput from '../reusableComponent/CustomInput';
 
 const SignUp = ({ navigation }) => {
   const [name, setName] = useState('');
@@ -42,40 +43,33 @@ const SignUp = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.heading}>Sign Up</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Enter your name"
-        placeholderTextColor="#999"
+      <CustomInput
         value={name}
-        onChangeText={(text) => setName(text)}
+        onChangeText={setName}
+        placeholder="Enter your name"
+        error={errors.name}
       />
-      {errors.name && <Text style={styles.error}>{errors.name}</Text>}
-      <TextInput
-        style={styles.input}
-        placeholder="Enter your email"
-        placeholderTextColor="#999"
-        keyboardType="email-address"
+      <CustomInput
         value={email}
-        onChangeText={(text) => setEmail(text)}
+        onChangeText={setEmail}
+        placeholder="Enter your email"
+        error={errors.email}
+        keyboardType="email-address"
       />
-      {errors.email && <Text style={styles.error}>{errors.email}</Text>}
-      <TextInput
-        style={styles.input}
-        placeholder="Enter your password"
-        placeholderTextColor="#999"
-        secureTextEntry
+      <CustomInput
         value={password}
-        onChangeText={(text) => setPassword(text)}
+        onChangeText={setPassword}
+        placeholder="Enter your password"
+        error={errors.password}
+        secureTextEntry
       />
-      {errors.password && <Text style={styles.error}>{errors.password}</Text>}
-      <Text style={styles.forgotPassword}>Forgot password?</Text>
       <CustomButton
         title="Register"
         onPress={handleSignUp}
-        variant="primary" 
+        variant="primary"
       />
       <Text style={styles.signInText}>
-        Already have an account?
+        Already have an account?{' '}
         <Text style={styles.signInLink} onPress={() => navigation.navigate('SignIn')}>
           Sign In
         </Text>
@@ -97,19 +91,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 30,
     textAlign: 'center',
-  },
-  input: {
-    backgroundColor: 'white',
-    color: 'black',
-    borderRadius: 10,
-    padding: 15,
-    marginBottom: 10,
-    fontSize: 16,
-  },
-  forgotPassword: {
-    color: '#999',
-    textAlign: 'right',
-    marginBottom: 20,
   },
   signInText: {
     color: 'white',

@@ -1,13 +1,17 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput } from 'react-native';
+import React, { useContext, useState } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CustomButton from '../reusableComponent/CustomButton';
+import CustomInput from '../reusableComponent/CustomInput';
+import { AuthUserContext } from '../context/authUserContext';
 
 const SignIn = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
+
+  const { login } = useContext(AuthUserContext);
 
   const handleSignIn = () => {
     let isValid = true;
@@ -32,7 +36,7 @@ const SignIn = ({ navigation }) => {
     if (isValid) {
       console.log('Email:', email);
       console.log('Password:', password);
-      navigation.navigate('Home');
+      navigation.navigate('Main');
     }
   };
 
@@ -44,32 +48,31 @@ const SignIn = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.heading}>Sign In</Text>
-      <TextInput
-        style={[styles.input, emailError ? styles.errorInput : null]}
-        placeholder="Enter your email"
-        placeholderTextColor="#999"
-        keyboardType="email-address"
+      {/* <Text>{login}</Text> */}
+      <CustomInput
         value={email}
-        onChangeText={(text) => setEmail(text)}
+        onChangeText={setEmail}
+        placeholder="Enter your email"
+        error={emailError}
+        keyboardType="email-address"
       />
-      {emailError ? <Text style={styles.errorText}>{emailError}</Text> : null}
-      <TextInput
-        style={[styles.input, passwordError ? styles.errorInput : null]}
-        placeholder="Enter your password"
-        placeholderTextColor="#999"
-        secureTextEntry
+      <CustomInput
         value={password}
-        onChangeText={(text) => setPassword(text)}
+        onChangeText={setPassword}
+        placeholder="Enter your password"
+        error={passwordError}
+        secureTextEntry
       />
-      {passwordError ? <Text style={styles.errorText}>{passwordError}</Text> : null}
-      <Text style={styles.forgotPassword}>Forgot password?</Text>
+      <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
+        <Text style={styles.forgotPassword}>Forgot password?</Text>
+      </TouchableOpacity>
       <CustomButton
         title="Login"
         onPress={handleSignIn}
-        variant="primary" 
+        variant="primary"
       />
       <Text style={styles.signUpText}>
-        Don't have an account?
+        Don't have an account?{' '}
         <Text style={styles.signUpLink} onPress={() => navigation.navigate('SignUp')}>
           Sign Up
         </Text>
@@ -91,22 +94,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 30,
     textAlign: 'center',
-  },
-  input: {
-    backgroundColor: 'white',
-    color: 'black',
-    borderRadius: 10,
-    padding: 15,
-    marginBottom: 20,
-    fontSize: 16,
-  },
-  errorInput: {
-    borderColor: 'red',
-    borderWidth: 1,
-  },
-  errorText: {
-    color: 'red',
-    marginBottom: 10,
   },
   forgotPassword: {
     color: '#999',

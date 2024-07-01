@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   rounded: {
-    borderRadius: 20,
+    borderRadius: 10,
   },
   outlined: {
     borderWidth: 1,
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
   },
   md: {
     paddingVertical: 15,
-    paddingHorizontal: 20,
+    paddingHorizontal: 30,
   },
   lg: {
     paddingVertical: 20,

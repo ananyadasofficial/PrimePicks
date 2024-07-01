@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 const WelcomeScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <Image source={require("../assets/images/PrimePicks.png")} style={styles.image} />
+      <Image source={require("../assets/images/PrimePicks (2).png")} style={styles.image} />
       <TouchableOpacity 
         style={styles.button} 
         onPress={() => navigation.navigate('SignIn')}
@@ -13,7 +13,7 @@ const WelcomeScreen = ({ navigation }) => {
       </TouchableOpacity>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {

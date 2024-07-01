@@ -1,37 +1,35 @@
-import 'react-native-gesture-handler';
-import React from 'react';
+import React, { useContext } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import WelcomeScreen from './screens/WelcomeScreen';
-import SignIn from './screens/SignIn';
-import SignUp from './screens/SignUp';
-import Home from './screens/Home';
-
-const Stack = createStackNavigator();
-
-// const App = () => {
-//   return (
-//     <NavigationContainer>
-//       <Stack.Navigator initialRouteName="Welcome">
-//         <Stack.Screen name="Welcome" component={WelcomeScreen} />
-//         <Stack.Screen name="SignIn" component={SignIn} />
-//         <Stack.Screen name="SignUp" component={SignUp} />
-//       </Stack.Navigator>
-//     </NavigationContainer>
-//   );
-// }
+import StackNavigator from './screens/StackNavigator';
+import { AuthUserContext, AuthUserProvider } from './context/authUserContext';
+import { View, ActivityIndicator } from 'react-native';
+import TabNavigator from './screens/TabNavigator';
+import CartProvider from './context/cartContext';
 
 const App = () => {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName='Welcome'>
-      <Stack.Screen name="Welcome" component={WelcomeScreen} options={{headerShown: false}} />
-      <Stack.Screen name="SignIn" component={SignIn} options={{headerShown: false}} />
-      <Stack.Screen name="SignUp" component={SignUp} options={{headerShown: false}} />
-      <Stack.Screen name="Home" component={Home} options={{headerShown: false}} />
-      </Stack.Navigator>
-    </NavigationContainer>
-  )
-}
+  const { authUser, userToken } = useContext(AuthUserContext);
 
-export default App;
+  if (authUser === null) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size={'large'} />
+      </View>
+    );
+  }
+
+  return (
+    <CartProvider>
+      <NavigationContainer>
+        {userToken !== null ? <TabNavigator /> : <StackNavigator />}
+      </NavigationContainer>
+    </CartProvider>
+  );
+};
+
+const AppWrapper = () => (
+  <AuthUserProvider>
+    <App />
+  </AuthUserProvider>
+);
+
+export default AppWrapper;
