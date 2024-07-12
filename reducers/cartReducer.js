@@ -22,25 +22,35 @@ export const cartReducer = (state, action) => {
         return { ...state, cart: [...state.cart, { ...productToAdd, quantity: 1 }] };
       }
     }
+
     case CART_ACTIONS.REMOVE_FROM_CART: {
       const productId = action.payload;
-      const updatedCart = state.cart
-        .map(item => (item.id === productId ? { ...item, quantity: item.quantity - 1 } : item))
-        .filter(item => item.quantity > 0);
+      const updatedCart = state.cart.filter(item => item.id !== productId);
       return { ...state, cart: updatedCart };
     }
-    case CART_ACTIONS.REMOVE_ALL: {
-      return { ...state, cart: [] };
-    }
+
     case CART_ACTIONS.UPDATE_QUANTITY: {
       const { productId, quantity } = action.payload;
       const updatedCart = state.cart.map(item =>
-        item.id === productId ? { ...item, quantity } : item
+        item.id === productId ? { ...item, quantity: quantity } : item
       );
       return { ...state, cart: updatedCart };
     }
+
+    case CART_ACTIONS.REMOVE_ALL: {
+      Alert.alert('Remove All', 'Are you sure you want to remove all items from your cart?', [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'OK',
+          onPress: () => {
+            return { ...state, cart: [] };
+          },
+        },
+      ]);
+      return state;
+    }
+
     default:
-      Alert.alert('Invalid action');
       return state;
   }
 };

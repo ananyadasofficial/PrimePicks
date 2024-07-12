@@ -14,6 +14,8 @@ import { Avatar, Title, Caption } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import * as ImagePicker from "expo-image-picker";
 import { AuthUserContext } from "../context/authUserContext";
+import ImagePickerExample from "./ImagePicker";
+
 
 const Profile = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -22,7 +24,10 @@ const Profile = () => {
   const [photo, setPhoto] = useState("https://cdn-icons-png.flaticon.com/512/3237/3237472.png");
 
   const handleChoosePhoto = async () => {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync().catch(error => {
+      console.error("requestMediaLibraryPermissionsAsync",error)
+    });
     if (status !== "granted") {
       alert("Sorry, we need camera roll permissions!");
       return;
@@ -33,6 +38,8 @@ const Profile = () => {
       allowsEditing: true,
       aspect: [1, 1],
       quality: 1,
+    }).catch(error => {
+      console.error("launchImageLibraryAsync",error)
     });
 
     if (!result.cancelled) {
@@ -79,11 +86,13 @@ const Profile = () => {
         <View style={styles.header}>
           <View style={styles.headerBackground}></View>
           <View style={styles.userInfoSection}>
-            <Avatar.Image source={{ uri: photo }} size={80} />
+            {/* <Avatar.Image source={{ uri: photo }} size={80} /> */}
+            <ImagePickerExample />
             <View style={{ marginLeft: 20 }}>
               <Title style={styles.title}>{name}</Title>
               <Caption style={styles.caption}>{email}</Caption>
             </View>
+            
             <TouchableOpacity onPress={() => setModalVisible(true)}>
               <Icon name="edit" size={24} color="black" style={{ marginLeft: "auto" }} />
             </TouchableOpacity>
@@ -143,15 +152,6 @@ const Profile = () => {
               <Icon name="close" size={24} color="black" />
             </TouchableOpacity>
             <Text style={styles.modalTitle}>Edit Profile</Text>
-            <View style={styles.avatarContainer}>
-              <Avatar.Image source={{ uri: photo }} size={80} style={styles.modalAvatar} />
-              <TouchableOpacity style={styles.cameraIcon} onPress={handleChoosePhoto}>
-                <Icon name="photo-camera" size={24} color="black" />
-              </TouchableOpacity>
-            </View>
-            <TouchableOpacity style={styles.removeButton} onPress={handleRemovePhoto}>
-              <Text style={styles.removeButtonText}>Remove Photo</Text>
-            </TouchableOpacity>
             <TextInput
               style={styles.input}
               value={name}
@@ -273,29 +273,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 20,
   },
-  avatarContainer: {
-    position: "relative",
-    marginBottom: 10,
-  },
-  modalAvatar: {
-    marginBottom: 10,
-  },
-  cameraIcon: {
-    position: "absolute",
-    bottom: 0,
-    right: 0,
-  },
-  removeButton: {
-    backgroundColor: "red",
-    paddingHorizontal: 20,
-    paddingVertical: 5,
-    borderRadius: 5,
-    marginBottom: 20,
-  },
-  removeButtonText: {
-    color: "white",
-    fontWeight: "bold",
-  },
   input: {
     width: "100%",
     height: 40,
@@ -314,6 +291,7 @@ const styles = StyleSheet.create({
   saveButtonText: {
     color: "white",
     fontWeight: "bold",
+
   },
 });
 

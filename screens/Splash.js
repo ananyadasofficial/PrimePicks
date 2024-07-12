@@ -9,7 +9,6 @@ const Splash = ({ navigation }) => {
     }, 4000); 
   }, []); // Dependency array so it is called only once
 
-  // Text to animate
   const text = "PRIMEPICKS";
 
   return (

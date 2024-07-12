@@ -2,25 +2,31 @@ import React, { useContext } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { CartContext } from '../context/cartContext';
+import { WishlistContext } from '../context/wishlistContext';
 import { CART_ACTIONS } from '../reducers/cartReducer';
+import { WISHLIST_ACTIONS } from '../reducers/wishlistReducer'; 
 import { FontAwesome, AntDesign } from '@expo/vector-icons';
 
-const Product = ({ item, isCart }) => {
+const Product = ({ item }) => {
   const navigation = useNavigation();
-  const { dispatch, cart } = useContext(CartContext);
+  const { dispatch: cartDispatch, cart } = useContext(CartContext);
+  const { dispatch: wishlistDispatch, wishlist } = useContext(WishlistContext);
 
   // Check if product is already in cart
   const productInCart = cart.find(cartItem => cartItem.id === item.id);
 
+  // Check if product is in wishlist
+  const productInWishlist = wishlist.find(wishlistItem => wishlistItem.id === item.id);
+
   // Handle decrease in quantity
   const handleDecrease = () => {
     if (productInCart && productInCart.quantity > 1) {
-      dispatch({
+      cartDispatch({
         type: CART_ACTIONS.UPDATE_QUANTITY,
         payload: { productId: item.id, quantity: productInCart.quantity - 1 },
       });
     } else if (productInCart && productInCart.quantity === 1) {
-      dispatch({
+      cartDispatch({
         type: CART_ACTIONS.REMOVE_FROM_CART,
         payload: item.id,
       });
@@ -29,10 +35,25 @@ const Product = ({ item, isCart }) => {
 
   // Handle increase in quantity
   const handleIncrease = () => {
-    dispatch({
+    cartDispatch({
       type: CART_ACTIONS.ADD_TO_CART,
       payload: { ...item, quantity: (productInCart ? productInCart.quantity + 1 : 1) },
     });
+  };
+
+  // Handle add/remove from wishlist
+  const toggleWishlist = () => {
+    if (productInWishlist) {
+      wishlistDispatch({
+        type: WISHLIST_ACTIONS.REMOVE_FROM_WISHLIST,
+        payload: item.id,
+      });
+    } else {
+      wishlistDispatch({
+        type: WISHLIST_ACTIONS.ADD_TO_WISHLIST,
+        payload: item,
+      });
+    }
   };
 
   // Navigate to product details screen
@@ -49,7 +70,7 @@ const Product = ({ item, isCart }) => {
           key={i}
           name="star"
           size={16}
-          color={i <= rating ? (rating >= 4 ? 'green' : rating >= 3 ? 'yellow' : 'red') : '#ccc'}
+          color={i <= rating ? (rating >= 4 ? 'green' : rating >= 3 ? '#FFC700' : 'red') : '#ccc'}
         />
       );
     }
@@ -67,17 +88,17 @@ const Product = ({ item, isCart }) => {
       </View>
       <View style={styles.detailsContainer}>
         <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.price}>${item.price.toFixed(2)}</Text>
+        <Text style={styles.price}>₹{(item.price * 75).toFixed(2)}</Text>
         {renderRating(item.rating)}
         <View style={styles.actionContainer}>
-          <View style={styles.wishlistContainer}>
+          <TouchableOpacity style={styles.wishlistContainer} onPress={toggleWishlist}>
             <AntDesign
-              name="hearto"
+              name={productInWishlist ? 'heart' : 'hearto'}
               size={25}
-              color="#FB8B24"
+              color={productInWishlist ? '#FB8B24' : '#555'}
               style={styles.wishlistIcon}
             />
-          </View>
+          </TouchableOpacity>
           {productInCart ? (
             <View style={styles.quantityContainer}>
               <TouchableOpacity style={styles.quantityButton} onPress={handleDecrease}>
@@ -90,9 +111,9 @@ const Product = ({ item, isCart }) => {
             </View>
           ) : (
             <TouchableOpacity
-              style={[styles.submitBtn, styles.addToCartBtn]} // Combined styles to reduce space
+              style={[styles.submitBtn, styles.addToCartBtn]}
               onPress={() => {
-                dispatch({
+                cartDispatch({
                   type: CART_ACTIONS.ADD_TO_CART,
                   payload: { ...item, quantity: 1 },
                 });
@@ -117,8 +138,8 @@ const styles = StyleSheet.create({
     elevation: 10,
     backgroundColor: '#FFF',
     padding: 20,
-    marginRight: 16, 
-    marginLeft: -3, 
+    marginRight: 16,
+    marginLeft: -3,
     marginBottom: 8,
     marginTop: 5,
     borderRadius: 10,
@@ -163,10 +184,10 @@ const styles = StyleSheet.create({
   wishlistContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginRight: 2, // Adjusted to reduce space
+    marginRight: 2,
   },
   wishlistIcon: {
-    marginRight: 2, // Adjusted to reduce space
+    marginRight: 2,
   },
   quantityContainer: {
     flexDirection: 'row',
@@ -196,13 +217,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   addToCartBtn: {
-    marginLeft: 10, // Adjusted margin to reduce space
+    marginLeft: 8,
   },
   buttonText: {
-    textAlign: 'center',
-    color: 'white',
+    fontSize: 16,
     fontWeight: 'bold',
-    fontSize: 14,
+    color: '#FFF',
   },
 });
 

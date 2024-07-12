@@ -5,6 +5,7 @@ import { AuthUserContext, AuthUserProvider } from './context/authUserContext';
 import { View, ActivityIndicator } from 'react-native';
 import TabNavigator from './screens/TabNavigator';
 import CartProvider from './context/cartContext';
+import { WishlistProvider } from './context/wishlistContext';
 
 const App = () => {
   const { authUser, userToken } = useContext(AuthUserContext);
@@ -18,11 +19,13 @@ const App = () => {
   }
 
   return (
+    <WishlistProvider>
     <CartProvider>
       <NavigationContainer>
         {userToken !== null ? <TabNavigator /> : <StackNavigator />}
       </NavigationContainer>
     </CartProvider>
+    </WishlistProvider>
   );
 };
 

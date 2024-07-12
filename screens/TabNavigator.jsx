@@ -7,7 +7,7 @@ import Search from './Search';
 import Cart from './Cart';
 import Wishlist from './Wishlist';
 import Profile from './Profile';
-import CartProvider, { CartContext } from '../context/cartContext';
+import { CartContext } from '../context/cartContext';
 
 const Tab = createBottomTabNavigator();
 
@@ -41,105 +41,107 @@ const TabNavigator = () => {
   };
 
   return (
-    <CartProvider>
-      <Tab.Navigator screenOptions={screenOptions}>
-        <Tab.Screen
-          name="Home"
-          component={DrawerNavigator}
-          options={{
-            headerShown: false,
-            tabBarLabel: "Home",
-            tabBarLabelStyle: { fontWeight: '500', fontSize: 12 },
-            tabBarIcon: ({ color }) => (
-              <AntDesign name="home" size={25} style={{ color: color }} />
-            ),
-            tabBarActiveTintColor: "orange",
-            tabBarInactiveTintColor: "black",
-            tabBarActiveBackgroundColor: "white",
-            tabBarInactiveBackgroundColor: "white",
-          }}
-        />
-        <Tab.Screen
-          name="Search"
-          component={Search}
-          options={{
-            tabBarLabel: "Search",
-            tabBarLabelStyle: { fontWeight: '500', fontSize: 12 },
-            tabBarIcon: ({ color }) => (
-              <AntDesign name="search1" size={25} style={{ color: color }} />
-            ),
-            tabBarActiveTintColor: "orange",
-            tabBarInactiveTintColor: "black",
-            tabBarActiveBackgroundColor: "white",
-            tabBarInactiveBackgroundColor: "white",
-          }}
-        />
-        <Tab.Screen
-          name="Cart"
-          component={Cart}
-          options={{
-            tabBarLabel: "Cart",
-            tabBarLabelStyle: { fontWeight: '500', fontSize: 12 },
-            tabBarIcon: ({ color }) => (
-              <CartIconWithBadge color={color} size={25} />
-            ),
-            tabBarActiveTintColor: "orange",
-            tabBarInactiveTintColor: "black",
-            tabBarActiveBackgroundColor: "white",
-            tabBarInactiveBackgroundColor: "white",
-          }}
-        />
-        <Tab.Screen
-          name="Wishlist"
-          component={Wishlist}
-          options={{
-            tabBarLabel: "Wishlist",
-            tabBarLabelStyle: { fontWeight: '500', fontSize: 12 },
-            tabBarIcon: ({ color }) => (
-              <AntDesign name="hearto" size={25} style={{ color: color }} />
-            ),
-            tabBarActiveTintColor: "orange",
-            tabBarInactiveTintColor: "black",
-            tabBarActiveBackgroundColor: "white",
-            tabBarInactiveBackgroundColor: "white",
-          }}
-        />
-        <Tab.Screen
-          name="Profile"
-          component={Profile}
-          options={{
-            tabBarLabel: "Profile",
-            tabBarLabelStyle: { fontWeight: '500', fontSize: 12 },
-            tabBarIcon: ({ color }) => (
-              <AntDesign name="user" size={25} style={{ color: color }} />
-            ),
-            tabBarActiveTintColor: "orange",
-            tabBarInactiveTintColor: "black",
-            tabBarActiveBackgroundColor: "white",
-            tabBarInactiveBackgroundColor: "white",
-          }}
-        />
-      </Tab.Navigator>
-    </CartProvider>
+    <Tab.Navigator screenOptions={screenOptions}>
+      <Tab.Screen
+        name="Home"
+        component={DrawerNavigator}
+        options={{
+          headerShown: false,
+          tabBarLabel: "Home",
+          tabBarLabelStyle: { fontWeight: '500', fontSize: 12 },
+          tabBarIcon: ({ color }) => (
+            <AntDesign name="home" size={25} style={{ color: color }} />
+          ),
+          tabBarActiveTintColor: "orange",
+          tabBarInactiveTintColor: "black",
+          tabBarActiveBackgroundColor: "white",
+          tabBarInactiveBackgroundColor: "white",
+        }}
+      />
+      <Tab.Screen
+        name="Search"
+        component={Search}
+        options={{
+          tabBarLabel: "Search",
+          tabBarLabelStyle: { fontWeight: '500', fontSize: 12 },
+          tabBarIcon: ({ color }) => (
+            <AntDesign name="search1" size={25} style={{ color: color }} />
+          ),
+          tabBarActiveTintColor: "orange",
+          tabBarInactiveTintColor: "black",
+          tabBarActiveBackgroundColor: "white",
+          tabBarInactiveBackgroundColor: "white",
+        }}
+      />
+      <Tab.Screen
+        name="Cart"
+        component={Cart}
+        options={{
+          tabBarLabel: "Cart",
+          tabBarLabelStyle: { fontWeight: '500', fontSize: 12 },
+          tabBarIcon: ({ color }) => (
+            <CartIconWithBadge color={color} size={25} />
+          ),
+          tabBarActiveTintColor: "orange",
+          tabBarInactiveTintColor: "black",
+          tabBarActiveBackgroundColor: "white",
+          tabBarInactiveBackgroundColor: "white",
+        }}
+      />
+      <Tab.Screen
+        name="Wishlist"
+        component={Wishlist}
+        options={{
+          tabBarLabel: "Wishlist",
+          tabBarLabelStyle: { fontWeight: '500', fontSize: 12 },
+          tabBarIcon: ({ color }) => (
+            <AntDesign name="hearto" size={25} style={{ color: color }} />
+          ),
+          tabBarActiveTintColor: "orange",
+          tabBarInactiveTintColor: "black",
+          tabBarActiveBackgroundColor: "white",
+          tabBarInactiveBackgroundColor: "white",
+        }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={Profile}
+        options={{
+          tabBarLabel: "Profile",
+          tabBarLabelStyle: { fontWeight: '500', fontSize: 12 },
+          tabBarIcon: ({ color }) => (
+            <AntDesign name="user" size={25} style={{ color: color }} />
+          ),
+          tabBarActiveTintColor: "orange",
+          tabBarInactiveTintColor: "black",
+          tabBarActiveBackgroundColor: "white",
+          tabBarInactiveBackgroundColor: "white",
+        }}
+      />
+    </Tab.Navigator>
   );
 };
 
 const styles = StyleSheet.create({
   iconContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
     position: 'relative',
   },
   badgeContainer: {
     position: 'absolute',
-    right: -6,
-    top: -3,
+    top: -5,
+    right: -12,
     backgroundColor: 'red',
     borderRadius: 10,
-    paddingHorizontal: 6,
-    paddingVertical: 2,
+    width: 20,
+    height: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   badgeText: {
     color: 'white',
-    fontSize: 10,
+    fontSize: 12,
     fontWeight: 'bold',
   },
 });

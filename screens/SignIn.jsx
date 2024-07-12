@@ -56,7 +56,7 @@ const SignIn = ({ navigation }) => {
         error={emailError}
         keyboardType="email-address"
       />
-      <CustomInput
+      <CustomInput 
         value={password}
         onChangeText={setPassword}
         placeholder="Enter your password"

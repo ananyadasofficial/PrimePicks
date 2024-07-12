@@ -1,9 +1,29 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, ScrollView, Text, StyleSheet, Image, Dimensions } from 'react-native';
 import CustomButton from '../reusableComponent/CustomButton';
+import { useNavigation } from '@react-navigation/native';
+import { CartContext } from '../context/cartContext';
+import { CART_ACTIONS } from '../reducers/cartReducer';
+import { FontAwesome } from '@expo/vector-icons';
 
 const ProductDetails = ({ route }) => {
   const { item } = route.params;
+  const navigation = useNavigation();
+  const { cart, dispatch } = useContext(CartContext);
+
+  // Function to handle Add to Cart button press
+  const handleAddToCart = () => {
+    dispatch({
+      type: CART_ACTIONS.ADD_TO_CART,
+      payload: { ...item, quantity: 1 },
+    });
+    // No navigation needed here; cart count will update in TabNavigator automatically
+  };
+
+  // Function to handle Buy Now button press
+  const handleBuyNow = () => {
+    navigation.navigate('BuyNowSummary', { cartItems: cart });
+  };
 
   // Function to render rating stars
   const renderRating = (rating) => {
@@ -14,11 +34,17 @@ const ProductDetails = ({ route }) => {
           key={i}
           name="star"
           size={16}
+          style={{ marginRight: 2, marginBottom: 2 }}
           color={i <= rating ? (rating >= 4 ? 'green' : rating >= 3 ? 'yellow' : 'red') : '#ccc'}
         />
       );
     }
-    return <View style={styles.rating}>{stars}</View>;
+    return (
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <Text style={{ marginRight: 5 }}>Rating:</Text>
+        {stars}
+      </View>
+    );
   };
 
   return (
@@ -29,20 +55,22 @@ const ProductDetails = ({ route }) => {
           source={{ uri: item.images && item.images.length > 0 ? item.images[0] : 'https://via.placeholder.com/150' }}
           resizeMode="cover"
         />
-        {/* Wishlist icon (Assuming it's already implemented) */}
-        {/* Replace with your implementation of Wishlist icon */}
       </View>
       <View style={styles.detailsContainer}>
         <Text style={styles.title}>{item.title}</Text>
         {item.description && <Text style={styles.description}>{item.description}</Text>}
-        <Text style={styles.price}>Price: ${item.price.toFixed(2)}</Text>
+        <Text style={styles.price}>Price: ₹{(item.price * 75).toFixed(2)}</Text>
         <Text style={styles.stock}>Stock: {item.stock}</Text>
         {item.category && <Text style={styles.category}>Category: {item.category}</Text>}
         {item.brand && <Text style={styles.brand}>Brand: {item.brand}</Text>}
         {item.tags && item.tags.length > 0 && (
           <Text style={styles.tags}>Tags: {item.tags.join(', ')}</Text>
         )}
-        {item.rating && <Text style={styles.rating}>Rating: {item.rating.toFixed(2)}</Text>}
+        {item.rating && (
+          <View style={styles.rating}>
+            {renderRating(item.rating)}
+          </View>
+        )}
         {item.warrantyInformation && (
           <Text style={styles.warranty}>Warranty: {item.warrantyInformation}</Text>
         )}
@@ -52,26 +80,20 @@ const ProductDetails = ({ route }) => {
         {item.returnPolicy && (
           <Text style={styles.returnPolicy}>Return Policy: {item.returnPolicy}</Text>
         )}
-
-        {/* Buttons */}
         <View style={styles.buttonContainer}>
           <CustomButton
             title="Add to Cart"
-            onPress={() => {
-              // Add to cart logic here
-            }}
+            onPress={handleAddToCart}
             btnKind="rounded"
             variant="primary"
-            size="md" // Adjusted size to medium
+            size="md"
           />
           <CustomButton
             title="Buy Now"
-            onPress={() => {
-              // Buy now logic here
-            }}
+            onPress={handleBuyNow}
             btnKind="rounded"
             variant="secondary"
-            size="md" // Adjusted size to medium
+            size="md"
           />
         </View>
       </View>
@@ -92,7 +114,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: Dimensions.get('window').width - 40,
-    height: (Dimensions.get('window').width - 40) * 0.75, // Maintain aspect ratio
+    height: (Dimensions.get('window').width - 40) * 0.75,
     borderRadius: 10,
   },
   detailsContainer: {
@@ -137,6 +159,7 @@ const styles = StyleSheet.create({
   },
   rating: {
     flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 10,
   },
   warranty: {
@@ -151,14 +174,13 @@ const styles = StyleSheet.create({
   },
   returnPolicy: {
     fontSize: 16,
-    marginBottom: 5,
+    marginBottom: 10,
     color: '#333',
   },
   buttonContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     marginTop: 20,
-    paddingHorizontal: 10,
   },
 });
 
